@@ -1,8 +1,8 @@
-from google import genai as ai
-import os
+import google.generativeai as genai
+
 import streamlit as st
-os.environ["API_KEY"] = "AIzaSyCAfu6mLEQ_kbFNuejOieKCpAxkIqLa3es"
-client = ai.Client(api_key = os.getenv("API_KEY"))
+genai.configure(api_key = "AIzaSyCAfu6mLEQ_kbFNuejOieKCpAxkIqLa3es")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 st.title("AI based BMI calculator - know your Health!")
 
@@ -18,6 +18,6 @@ if st.button("Calculate BMI"):
     st.write(f"{name}, with your weight {wt} and height {ht}, your BMI is: {bmi}")
 
 prompt = f"Act like a expert nutritionist, comment on the BMI with the following data: height as {ht}, weight as {wt}, age as {age}, gender as {gender} BMI as {bmi}, please suggest how the BMI is"
-response = client.models.generate_content(model="gemini-2.5-flash", contents = prompt)
+response = model.generate_content(prompt)
 
 st.markdown(response.text)
